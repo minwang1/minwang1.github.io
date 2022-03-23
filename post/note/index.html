@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>My New Hugo Site</title>
+<meta name="keywords" content="" />
+<meta name="description" content="Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);
+if (invertedL &lt; lab.L) {// 反转后的明度低于原明度，则使用反转后的明度lab.L = invertedL;// 使用 rgb 格式返回return LabToSRGB(lab, SkColorGetA(color));} else {// 直接返回原颜色return color;} 其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。
+解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。
+统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity
+-S表示每次启动前先强行停止 -R表示重复测试次数。
+application attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。">
+<meta name="author" content="">
+<link rel="canonical" href="http://example.org/post/note/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="http://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="" />
+<meta property="og:description" content="Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);
+if (invertedL &lt; lab.L) {// 反转后的明度低于原明度，则使用反转后的明度lab.L = invertedL;// 使用 rgb 格式返回return LabToSRGB(lab, SkColorGetA(color));} else {// 直接返回原颜色return color;} 其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。
+解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。
+统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity
+-S表示每次启动前先强行停止 -R表示重复测试次数。
+application attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/post/note/" /><meta property="article:section" content="post" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);
+if (invertedL &lt; lab.L) {// 反转后的明度低于原明度，则使用反转后的明度lab.L = invertedL;// 使用 rgb 格式返回return LabToSRGB(lab, SkColorGetA(color));} else {// 直接返回原颜色return color;} 其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。
+解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。
+统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity
+-S表示每次启动前先强行停止 -R表示重复测试次数。
+application attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://example.org/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "",
+      "item": "http://example.org/post/note/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "",
+  "name": "",
+  "description": "Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);\nif (invertedL \u0026lt; lab.L) {\r// 反转后的明度低于原明度，则使用反转后的明度\rlab.L = invertedL;\r// 使用 rgb 格式返回\rreturn LabToSRGB(lab, SkColorGetA(color));\r} else {\r// 直接返回原颜色\rreturn color;\r}\r 其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。\n解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。\n统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity\n-S表示每次启动前先强行停止 -R表示重复测试次数。\napplication attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。",
+  "keywords": [
+    
+  ],
+  "articleBody": "Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);\nif (invertedL  其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。\n解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。\n统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity\n-S表示每次启动前先强行停止 -R表示重复测试次数。\napplication attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。\nIntent中的参数  action： 执行的动作例如 action_main:作为主要入口启动，不希望接收数据。actionview:向用户显示数据。 这是对数据执行的最常见操作这是您可以对一条数据使用的一般操作，以使最合理的事情发生 data：写到的uri数据 category：给定action额外的信息，例如CATEGORY_HOMT代表接收home点击时动作。CATEGORY_LAUNCHER代表接受启动时动作 type：mime类型 component：精确指定启动类 extra：Bundle对象携带的额外信息  ",
+  "wordCount" : "78",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://example.org/post/note/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "My New Hugo Site",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://example.org/" accesskey="h" title="My New Hugo Site (Alt + H)">My New Hugo Site</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      
+    </h1>
+    <div class="post-meta">
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="android-dark-模式原理">Android dark 模式原理<a hidden class="anchor" aria-hidden="true" href="#android-dark-模式原理">#</a></h1>
+<ol>
+<li>sRgb to lab</li>
+<li>revert l</li>
+<li>lab to sRGB</li>
+</ol>
+<p>float invertedL = std::min(110 - lab.L, 100.0f);</p>
+<pre><code>if (invertedL &lt; lab.L) {
+    // 反转后的明度低于原明度，则使用反转后的明度
+    lab.L = invertedL;
+    // 使用 rgb 格式返回
+    return LabToSRGB(lab, SkColorGetA(color));
+} else {
+    // 直接返回原颜色
+    return color;
+}
+</code></pre>
+<h1 id="其他应用启动本应用activitystack如何处理">其他应用启动本应用ActivityStack如何处理<a hidden class="anchor" aria-hidden="true" href="#其他应用启动本应用activitystack如何处理">#</a></h1>
+<p>例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。
+如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。</p>
+<p>解决方法：
+通过splashActivity做中转。
+1.创建一个空的SplashActivity，theme为透明，配置为启动activity。
+2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动
+mainactivity。</p>
+<h1 id="统计启动时间">统计启动时间<a hidden class="anchor" aria-hidden="true" href="#统计启动时间">#</a></h1>
+<p>adb shell am start -S -R 10 -W com.example.app/.MainActivity</p>
+<p>-S表示每次启动前先强行停止
+-R表示重复测试次数。</p>
+<p>application attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。</p>
+<h1 id="intent中的参数">Intent中的参数<a hidden class="anchor" aria-hidden="true" href="#intent中的参数">#</a></h1>
+<ul>
+<li>action： 执行的动作例如 action_main:作为主要入口启动，不希望接收数据。actionview:向用户显示数据。
+这是对数据执行的最常见操作这是您可以对一条数据使用的一般操作，以使最合理的事情发生</li>
+<li>data：写到的uri数据</li>
+<li>category：给定action额外的信息，例如CATEGORY_HOMT代表接收home点击时动作。CATEGORY_LAUNCHER代表接受启动时动作</li>
+<li>type：mime类型</li>
+<li>component：精确指定启动类</li>
+<li>extra：Bundle对象携带的额外信息</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="http://example.org/">My New Hugo Site</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

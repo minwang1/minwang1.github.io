@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Java8流式编程 | minwang1</title>
+<meta name="keywords" content="" />
+<meta name="description" content="流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道
+java7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。
+default Streamstream()https://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md
+相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。
+ peek()允许你无修改地查看流中的元素。 示例peek(e -&gt; System.out.println(&ldquo;Filtered value: &quot; &#43; e))* sorted() 元素排序。示例sorted(Comparator.reverseOrder())* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -&gt; e &gt; 2);  应用到元素
+  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -&gt; e &#43; 2);
+  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。
+  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。
+  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。
+  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream.">
+<meta name="author" content="">
+<link rel="canonical" href="http://minwang1.github.io/post/streaming-programming/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://minwang1.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://minwang1.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://minwang1.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://minwang1.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="http://minwang1.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Java8流式编程" />
+<meta property="og:description" content="流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道
+java7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。
+default Streamstream()https://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md
+相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。
+ peek()允许你无修改地查看流中的元素。 示例peek(e -&gt; System.out.println(&ldquo;Filtered value: &quot; &#43; e))* sorted() 元素排序。示例sorted(Comparator.reverseOrder())* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -&gt; e &gt; 2);  应用到元素
+  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -&gt; e &#43; 2);
+  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。
+  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。
+  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。
+  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://minwang1.github.io/post/streaming-programming/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-03-21T22:01:14&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-21T22:01:14&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java8流式编程"/>
+<meta name="twitter:description" content="流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道
+java7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。
+default Streamstream()https://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md
+相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。
+ peek()允许你无修改地查看流中的元素。 示例peek(e -&gt; System.out.println(&ldquo;Filtered value: &quot; &#43; e))* sorted() 元素排序。示例sorted(Comparator.reverseOrder())* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -&gt; e &gt; 2);  应用到元素
+  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -&gt; e &#43; 2);
+  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。
+  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。
+  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。
+  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://minwang1.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Java8流式编程",
+      "item": "http://minwang1.github.io/post/streaming-programming/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Java8流式编程",
+  "name": "Java8流式编程",
+  "description": "流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道\njava7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。\ndefault Streamstream()\rhttps://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md\n相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。\n peek()允许你无修改地查看流中的元素。 示例peek(e -\u0026gt; System.out.println(\u0026ldquo;Filtered value: \u0026quot; + e))\r* sorted() 元素排序。示例sorted(Comparator.reverseOrder())\r* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -\u0026gt; e \u0026gt; 2);  应用到元素\n  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -\u0026gt; e + 2);\n  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。\n  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。\n  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。\n  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream.",
+  "keywords": [
+    
+  ],
+  "articleBody": "流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道\njava7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。\ndefault Streamstream()\rhttps://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md\n相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。\n peek()允许你无修改地查看流中的元素。 示例peek(e - System.out.println(“Filtered value: \" + e))\r* sorted() 元素排序。示例sorted(Comparator.reverseOrder())\r* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e - e  2);  应用到元素\n  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e - e + 2);\n  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。\n  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。\n  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。\n  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream.of(1, 2, 3).flatMap(i - Stream.of(“Gonzo”, “Fozzie”, “Beaker”))\n  flatMapToInt(Function)：当 Function 产生 IntStream 时使用。\n  flatMapToLong(Function)：当 Function 产生 LongStream 时使用。\n  flatMapToDouble(Function)：当 Function 产生 DoubleStream 时使用。\n  findFirst() 返回一个包含第一个元素的 Optional 对象，如果流为空则返回 Optional.empty\n  findAny() 返回包含任意元素的 Optional 对象，如果流为空则返回 Optional.empty\n  max() 和 min() 返回一个包含最大值或者最小值的 Optional 对象，如果流为空则返回 Optional.empty\n  ifPresent(Consumer)：当值存在时调用 Consumer，否则什么也不做。\n  orElse(otherObject)：如果值存在则直接返回，否则生成 otherObject。\n  orElseGet(Supplier)：如果值存在则直接返回，否则使用 Supplier 函数生成一个可替代对象。\n  orElseThrow(Supplier)：如果值存在直接返回，否则使用 Supplier 函数生成一个异常。\n  empty()：生成一个空 Optional。\n  of(value)：将一个非空值包装到 Optional 里。\n  ofNullable(value)：针对一个可能为空的值，为空时自动生成 Optional.empty，否则将值包装在 Optional 中。\n  数组\n toArray()：将流转换成适当类型的数组。 toArray(generator)：在特殊情况下，生成自定义类型的数组。  循环\n forEach(Consumer)常见如 System.out::println 作为 Consumer 函数。 forEachOrdered(Consumer)： 保证 forEach 按照原始流顺序操作。  集合\n collect(Collector)：使用 Collector 收集流元素到结果集合中。  匹配\n allMatch(Predicate) ：如果流的每个元素根据提供的 Predicate 都返回 true 时，结果返回为 true。在第一个 false 时，则停止执行计算。 anyMatch(Predicate)：如果流中的任意一个元素根据提供的 Predicate 返回 true 时，结果返回为 true。在第一个 false 是停止执行计算。 noneMatch(Predicate)：如果流的每个元素根据提供的 Predicate 都返回 false 时，结果返回为 true。在第一个 true 时停止执行计算  查找\n findFirst()：返回第一个流元素的 Optional，如果流为空返回 Optional.empty。 findAny(：返回含有任意流元素的 Optional，如果流为空返回 Optional.empty。  信息\n count()：流中的元素个数。 max(Comparator)：根据所传入的 Comparator 所决定的“最大”元素。 min(Comparator)：根据所传入的 Comparator 所决定的“最小”元素。  数字流信息\n average() ：求取流元素平均值。 max() 和 min()：数值流操作无需 Comparator。 sum()：对所有流元素进行求和。 summaryStatistics()：生成可能有用的数据。目前并不太清楚这个方法存在的必要性，因为我们其实可以用更直接的方法获得需要的数据。  ",
+  "wordCount" : "184",
+  "inLanguage": "en",
+  "datePublished": "2022-03-21T22:01:14+08:00",
+  "dateModified": "2022-03-21T22:01:14+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://minwang1.github.io/post/streaming-programming/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "minwang1",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://minwang1.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://minwang1.github.io/" accesskey="h" title="minwang1 (Alt + H)">minwang1</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://minwang1.github.io/post/" title="Blog">
+                    <span><i class='fa fa-heart'></i>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://minwang1.github.io/tags/" title="Tags">
+                    <span><i class='fa fa-road'></i>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Java8流式编程
+    </h1>
+    <div class="post-meta"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="流式编程">流式编程<a hidden class="anchor" aria-hidden="true" href="#流式编程">#</a></h2>
+<h3 id="背景">背景<a hidden class="anchor" aria-hidden="true" href="#背景">#</a></h3>
+<p>利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道</p>
+<p>java7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。</p>
+<p>default Stream<!-- raw HTML omitted --> stream()https://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md</p>
+<h3 id="相关api">相关API<a hidden class="anchor" aria-hidden="true" href="#相关api">#</a></h3>
+<h4 id="流的生成">流的生成<a hidden class="anchor" aria-hidden="true" href="#流的生成">#</a></h4>
+<ul>
+<li>Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流</li>
+<li>Random 子方法生成随机流</li>
+<li>BaseStream 相关子类方法生成流</li>
+<li>正则表达式匹配后结果生成流</li>
+</ul>
+<h4 id="中间操作">中间操作<a hidden class="anchor" aria-hidden="true" href="#中间操作">#</a></h4>
+<p>流中获取对象，将对象作为一个流从后端输出。</p>
+<ul>
+<li>peek()允许你无修改地查看流中的元素。 示例peek(e -&gt; System.out.println(&ldquo;Filtered value: &quot; + e))* sorted() 元素排序。示例sorted(Comparator.reverseOrder())* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct();</li>
+<li>filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -&gt; e &gt; 2);</li>
+</ul>
+<p>应用到元素</p>
+<ul>
+<li>
+<p>map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -&gt; e + 2);</p>
+</li>
+<li>
+<p>mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。</p>
+</li>
+<li>
+<p>mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。</p>
+</li>
+<li>
+<p>mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。</p>
+</li>
+<li>
+<p>flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。
+例子Stream.of(1, 2, 3).flatMap(i -&gt; Stream.of(&ldquo;Gonzo&rdquo;, &ldquo;Fozzie&rdquo;, &ldquo;Beaker&rdquo;))</p>
+</li>
+<li>
+<p>flatMapToInt(Function)：当 Function 产生 IntStream 时使用。</p>
+</li>
+<li>
+<p>flatMapToLong(Function)：当 Function 产生 LongStream 时使用。</p>
+</li>
+<li>
+<p>flatMapToDouble(Function)：当 Function 产生 DoubleStream 时使用。</p>
+</li>
+<li>
+<p>findFirst() 返回一个包含第一个元素的 Optional 对象，如果流为空则返回 Optional.empty</p>
+</li>
+<li>
+<p>findAny() 返回包含任意元素的 Optional 对象，如果流为空则返回 Optional.empty</p>
+</li>
+<li>
+<p>max() 和 min() 返回一个包含最大值或者最小值的 Optional 对象，如果流为空则返回 Optional.empty</p>
+</li>
+<li>
+<p>ifPresent(Consumer)：当值存在时调用 Consumer，否则什么也不做。</p>
+</li>
+<li>
+<p>orElse(otherObject)：如果值存在则直接返回，否则生成 otherObject。</p>
+</li>
+<li>
+<p>orElseGet(Supplier)：如果值存在则直接返回，否则使用 Supplier 函数生成一个可替代对象。</p>
+</li>
+<li>
+<p>orElseThrow(Supplier)：如果值存在直接返回，否则使用 Supplier 函数生成一个异常。</p>
+</li>
+<li>
+<p>empty()：生成一个空 Optional。</p>
+</li>
+<li>
+<p>of(value)：将一个非空值包装到 Optional 里。</p>
+</li>
+<li>
+<p>ofNullable(value)：针对一个可能为空的值，为空时自动生成 Optional.empty，否则将值包装在 Optional 中。</p>
+</li>
+</ul>
+<p>数组</p>
+<ul>
+<li>toArray()：将流转换成适当类型的数组。</li>
+<li>toArray(generator)：在特殊情况下，生成自定义类型的数组。</li>
+</ul>
+<p>循环</p>
+<ul>
+<li>forEach(Consumer)常见如 System.out::println 作为 Consumer 函数。</li>
+<li>forEachOrdered(Consumer)： 保证 forEach 按照原始流顺序操作。</li>
+</ul>
+<p>集合</p>
+<ul>
+<li>collect(Collector)：使用 Collector 收集流元素到结果集合中。</li>
+</ul>
+<p>匹配</p>
+<ul>
+<li>allMatch(Predicate) ：如果流的每个元素根据提供的 Predicate 都返回 true 时，结果返回为 true。在第一个 false 时，则停止执行计算。</li>
+<li>anyMatch(Predicate)：如果流中的任意一个元素根据提供的 Predicate 返回 true 时，结果返回为 true。在第一个 false 是停止执行计算。</li>
+<li>noneMatch(Predicate)：如果流的每个元素根据提供的 Predicate 都返回 false 时，结果返回为 true。在第一个 true 时停止执行计算</li>
+</ul>
+<p>查找</p>
+<ul>
+<li>findFirst()：返回第一个流元素的 Optional，如果流为空返回 Optional.empty。</li>
+<li>findAny(：返回含有任意流元素的 Optional，如果流为空返回 Optional.empty。</li>
+</ul>
+<p>信息</p>
+<ul>
+<li>count()：流中的元素个数。</li>
+<li>max(Comparator)：根据所传入的 Comparator 所决定的“最大”元素。</li>
+<li>min(Comparator)：根据所传入的 Comparator 所决定的“最小”元素。</li>
+</ul>
+<p>数字流信息</p>
+<ul>
+<li>average() ：求取流元素平均值。</li>
+<li>max() 和 min()：数值流操作无需 Comparator。</li>
+<li>sum()：对所有流元素进行求和。</li>
+<li>summaryStatistics()：生成可能有用的数据。目前并不太清楚这个方法存在的必要性，因为我们其实可以用更直接的方法获得需要的数据。</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="http://minwang1.github.io/">minwang1</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

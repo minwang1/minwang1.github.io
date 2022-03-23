@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>404 Page not found | minwang1</title>
+<title>性能 | minwang1</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://minwang1.github.io/404.html" />
+<link rel="canonical" href="http://minwang1.github.io/tags/%E6%80%A7%E8%83%BD/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://minwang1.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://minwang1.github.io/favicon-16x16.png">
@@ -18,6 +18,7 @@
 <link rel="mask-icon" href="http://minwang1.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://minwang1.github.io/tags/%E6%80%A7%E8%83%BD/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -54,13 +55,13 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="404 Page not found" />
+</noscript><meta property="og:title" content="性能" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://minwang1.github.io/404.html" />
+<meta property="og:url" content="http://minwang1.github.io/tags/%E6%80%A7%E8%83%BD/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="404 Page not found"/>
+<meta name="twitter:title" content="性能"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -118,8 +119,26 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-<div class="not-found">404</div>
+<main class="main"> 
+<header class="page-header">
+  <h1>性能</h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Android常用性能分析
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>perfetto 工具 （替代systrace）  加载：perfetto 会生成.perfetto-trace文件 加载.perfetto-trace文件需要使用网站 https://ui.perfetto.dev/#!/ 网站抓取：打开网站，选择record new trace选项，经行配置后可抓取，需要Android 10以上设备，并且厂商设备支持 adb抓取：用网站抓取的步骤，正确的选择设备版本，不同版本使用的命令不同，点击startRecording后会出现recording command。 将recordingcommand粘贴到shell中执行。 手机上抓取：手机进入开发者模式，找到系统跟踪选项，点击清除已保存跟踪路径，会弹出对话框显示文件生成保存路径。打开显示快捷设置图块。 然后可以再下拉菜单中开启、关闭抓取了。  分析 操作和分析和systrace类似
+ 查看掉帧进程 常看进程中线程阻塞/耗时情况 如果是阻塞，可继续分析是否被其他进程block 了解大概耗时代码位置，接着用CPU Profiler分析具体那些地方耗时过长  CPU Profiler AS 3.0之后版本支持，替代Android Monitor tools
+使用  点击 View &gt; Tool Windows &gt; Android Profiler（也可以点击底部工具栏中的Profiler）。 点击&#43;号，添加目标进程，点击cpu选项，选择record java method，进行问题复现，点击stopRecording 对相关结果分析，可通过topdown等tab，快速定位  特殊场景
+启动性能分析  可通过adb shell am start -W pakageName/activityClassPath 命令，查看冷启动耗时 可以注意到AS CPU Profiler只能检测启动中的进程，这时候需要通过插桩方式，在设备中生成trace，再将tarce拉取到AS中分析  具体步骤为：
+ application 中 onCreate()方法加入 Debug.startMethodTracing(“sample-name”); 在启动绘制结束地方，activity中onWindownFocusChange()中可添加Debug.stopMethodTracing(); 复现问题后，系统将在getExternalFilesDir() 目录下生成 ....</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
+  <a class="entry-link" aria-label="post link to Android常用性能分析" href="http://minwang1.github.io/post/performance-analyze/"></a>
+</article>
     </main>
     
 <footer class="footer">

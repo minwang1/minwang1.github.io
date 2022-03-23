@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>minwang1</title>
-    <link>http://minwang1.github.io/</link>
-    <description>Recent content on minwang1</description>
+    <title>Posts on minwang1</title>
+    <link>http://minwang1.github.io/post/</link>
+    <description>Recent content in Posts on minwang1</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 21 Mar 2022 22:01:14 +0800</lastBuildDate><atom:link href="http://minwang1.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Mar 2022 22:01:14 +0800</lastBuildDate><atom:link href="http://minwang1.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android dark 模式原理</title>
       <link>http://minwang1.github.io/post/android-drak-theme/</link>

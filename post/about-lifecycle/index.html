@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>LifeCycle原理 | minwang1</title>
+<meta name="keywords" content="组件" />
+<meta name="description" content="1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。
+在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。
+所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。
+lifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。
+2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location -&gt; {  // update UI  });  Util.">
+<meta name="author" content="">
+<link rel="canonical" href="http://minwang1.github.io/post/about-lifecycle/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://minwang1.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://minwang1.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://minwang1.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://minwang1.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="http://minwang1.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="LifeCycle原理" />
+<meta property="og:description" content="1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。
+在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。
+所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。
+lifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。
+2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location -&gt; {  // update UI  });  Util." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://minwang1.github.io/post/about-lifecycle/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-03-21T22:01:14&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-21T22:01:14&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="LifeCycle原理"/>
+<meta name="twitter:description" content="1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。
+在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。
+所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。
+lifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。
+2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location -&gt; {  // update UI  });  Util."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://minwang1.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "LifeCycle原理",
+      "item": "http://minwang1.github.io/post/about-lifecycle/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LifeCycle原理",
+  "name": "LifeCycle原理",
+  "description": "1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。\n在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。\n所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。\nlifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。\n2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location -\u0026gt; {  // update UI  });  Util.",
+  "keywords": [
+    "组件"
+  ],
+  "articleBody": "1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。\n在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。\n所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。\nlifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。\n2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location - {  // update UI  });  Util.checkUserStatus(result - {  if (result) {  myLocationListener.enable();  }  });  }  }  将生命周期事件分发到 LifecycleRegistry 类中，由LifecycleRegistry分发给观察者。   public class MyActivity extends Activity implements LifecycleOwner {  private LifecycleRegistry lifecycleRegistry;   @Override  protected void onCreate(Bundle savedInstanceState) {  super.onCreate(savedInstanceState);   lifecycleRegistry = new LifecycleRegistry(this);  lifecycleRegistry.markState(Lifecycle.State.CREATED);  }   @Override  public void onStart() {  super.onStart();  lifecycleRegistry.markState(Lifecycle.State.STARTED);  }   @NonNull  @Override  public Lifecycle getLifecycle() {  return lifecycleRegistry;  }  } 3.LifeCycle 组件的结构图  本质上一个观察者模式的实现。LifecycleRegistry 作为分发者给注册的观察者分发事件，实现 LifecycleOwner 接口的类可以注册到 LifecycleRegistry 中。源事件是由 activity/fragment 分发出来的。\n 4.原理流程 4.1添加观察者 4.2分发流程 4.3移除观察者 5 生命周期感知型组件的最佳做法   使界面控制器（Activity 和 Fragment）尽可能保持精简。它们不应试图获取自己的数据，而应使用 ViewModel 执行此操作，并观察 LiveData 对象以将更改体现到视图中。\n  设法编写数据驱动型界面，对于此类界面，界面控制器的责任是随着数据更改而更新视图，或者将用户操作通知给 ViewModel。\n  将数据逻辑放在 ViewModel 类中。 ViewModel 应充当界面控制器与应用其余部分之间的连接器。不过要注意，ViewModel 不负责获取数据 （例如，从网络获取）。ViewModel 应调用相应的组件来获取数据，然后将结果提供给界面控制器。\n  使用 Data Binding 在视图与界面控制器之间维持干净的接口。这样一来，您可以使视图更具声明性，并尽量减少需要在 Activity 和 Fragment 中编写的更新代码。如果您更愿意使用 Java 编程语言执行此操作，请使用诸如 Butter Knife 之类的库，以避免样板代码并实现更 好的抽象化。如果界面很复杂，不妨考虑创建 presenter 类来处理界面的修改。这可能是一项艰巨的任务，但这样做可使界面组件更易于测试。\n  避免在 ViewModel 中引用 View 或 Activity 上下文。 如果 ViewModel 存在的时间比 Activity 更长（在配置更改的情况下）， Activity 将泄露并且不会由垃圾回收器妥善处置。\n  使用 Kotlin 协程管理长时间运行的任务和其他可以异步运行的操作。\n  ",
+  "wordCount" : "181",
+  "inLanguage": "en",
+  "datePublished": "2022-03-21T22:01:14+08:00",
+  "dateModified": "2022-03-21T22:01:14+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://minwang1.github.io/post/about-lifecycle/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "minwang1",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://minwang1.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://minwang1.github.io/" accesskey="h" title="minwang1 (Alt + H)">minwang1</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://minwang1.github.io/post/" title="Blog">
+                    <span><i class='fa fa-heart'></i>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://minwang1.github.io/tags/" title="Tags">
+                    <span><i class='fa fa-road'></i>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      LifeCycle原理
+    </h1>
+    <div class="post-meta"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="1what-lifecycle-use-for-">1.what lifeCycle use for ?<a hidden class="anchor" aria-hidden="true" href="#1what-lifecycle-use-for-">#</a></h2>
+<p>Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。
+通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。</p>
+<p>在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。
+此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart()
+中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束，
+这使得组件留存的时间比所需的时间要长。</p>
+<p>所以需要Lifecycle这个组件来帮助我们管理生命周期。
+Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。</p>
+<p>lifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。</p>
+<p><img loading="lazy" src="images/android/lifecycle-states.svg" alt="lifeCycle状态图"  />
+</p>
+<h2 id="2lifecycle-组件的使用方法">2.LifeCycle 组件的使用方法<a hidden class="anchor" aria-hidden="true" href="#2lifecycle-组件的使用方法">#</a></h2>
+<ul>
+<li>如何让一个对象有activity生命周期？</li>
+</ul>
+<ol>
+<li>实现LifecycleOwner接口，表示类有生命周期。</li>
+<li>注册LifecycleObserver到LifecycleOwner中。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> MyLocationListener myLocationListener<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(...)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            myLocationListener <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MyLocationListener<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> getLifecycle<span style="color:#f92672">(),</span> location <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// update UI
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>            Util<span style="color:#f92672">.</span><span style="color:#a6e22e">checkUserStatus</span><span style="color:#f92672">(</span>result <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>result<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    myLocationListener<span style="color:#f92672">.</span><span style="color:#a6e22e">enable</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></div><ol start="3">
+<li>将生命周期事件分发到 LifecycleRegistry 类中，由LifecycleRegistry分发给观察者。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActivity</span> <span style="color:#66d9ef">extends</span> Activity <span style="color:#66d9ef">implements</span> LifecycleOwner <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> LifecycleRegistry lifecycleRegistry<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            lifecycleRegistry <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LifecycleRegistry<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            lifecycleRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">markState</span><span style="color:#f92672">(</span>Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">State</span><span style="color:#f92672">.</span><span style="color:#a6e22e">CREATED</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onStart</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onStart</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            lifecycleRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">markState</span><span style="color:#f92672">(</span>Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">State</span><span style="color:#f92672">.</span><span style="color:#a6e22e">STARTED</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@NonNull</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Lifecycle <span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> lifecycleRegistry<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>    
+</span></span></code></pre></div><h2 id="3lifecycle-组件的结构图">3.LifeCycle 组件的结构图<a hidden class="anchor" aria-hidden="true" href="#3lifecycle-组件的结构图">#</a></h2>
+<blockquote>
+<p>本质上一个观察者模式的实现。LifecycleRegistry 作为分发者给注册的观察者分发事件，实现 LifecycleOwner 接口的类可以注册到 
+LifecycleRegistry 中。源事件是由 activity/fragment 分发出来的。</p>
+</blockquote>
+<h2 id="4原理流程">4.原理流程<a hidden class="anchor" aria-hidden="true" href="#4原理流程">#</a></h2>
+<p><img loading="lazy" src="images/android/lifecycle_component.png" alt="UML图"  />
+</p>
+<h3 id="41添加观察者">4.1添加观察者<a hidden class="anchor" aria-hidden="true" href="#41添加观察者">#</a></h3>
+<h3 id="42分发流程">4.2分发流程<a hidden class="anchor" aria-hidden="true" href="#42分发流程">#</a></h3>
+<h3 id="43移除观察者">4.3移除观察者<a hidden class="anchor" aria-hidden="true" href="#43移除观察者">#</a></h3>
+<h3 id="5-生命周期感知型组件的最佳做法">5 生命周期感知型组件的最佳做法<a hidden class="anchor" aria-hidden="true" href="#5-生命周期感知型组件的最佳做法">#</a></h3>
+<ul>
+<li>
+<p>使界面控制器（Activity 和 Fragment）尽可能保持精简。它们不应试图获取自己的数据，而应使用 ViewModel 执行此操作，并观察 
+LiveData 对象以将更改体现到视图中。</p>
+</li>
+<li>
+<p>设法编写数据驱动型界面，对于此类界面，界面控制器的责任是随着数据更改而更新视图，或者将用户操作通知给 ViewModel。</p>
+</li>
+<li>
+<p>将数据逻辑放在 ViewModel 类中。 ViewModel 应充当界面控制器与应用其余部分之间的连接器。不过要注意，ViewModel 不负责获取数据
+（例如，从网络获取）。ViewModel 应调用相应的组件来获取数据，然后将结果提供给界面控制器。</p>
+</li>
+<li>
+<p>使用 Data Binding 在视图与界面控制器之间维持干净的接口。这样一来，您可以使视图更具声明性，并尽量减少需要在 Activity 和 
+Fragment 中编写的更新代码。如果您更愿意使用 Java 编程语言执行此操作，请使用诸如 Butter Knife 之类的库，以避免样板代码并实现更
+好的抽象化。如果界面很复杂，不妨考虑创建 presenter 类来处理界面的修改。这可能是一项艰巨的任务，但这样做可使界面组件更易于测试。</p>
+</li>
+<li>
+<p>避免在 ViewModel 中引用 View 或 Activity 上下文。 如果 ViewModel 存在的时间比 Activity 更长（在配置更改的情况下），
+Activity 将泄露并且不会由垃圾回收器妥善处置。</p>
+</li>
+<li>
+<p>使用 Kotlin 协程管理长时间运行的任务和其他可以异步运行的操作。</p>
+</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://minwang1.github.io/tags/%E7%BB%84%E4%BB%B6/">组件</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="http://minwang1.github.io/">minwang1</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

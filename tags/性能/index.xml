@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>性能 on minwang1</title>
+    <link>http://minwang1.github.io/tags/%E6%80%A7%E8%83%BD/</link>
+    <description>Recent content in 性能 on minwang1</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 21 Mar 2022 22:01:14 +0800</lastBuildDate><atom:link href="http://minwang1.github.io/tags/%E6%80%A7%E8%83%BD/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android常用性能分析</title>
+      <link>http://minwang1.github.io/post/performance-analyze/</link>
+      <pubDate>Mon, 21 Mar 2022 22:01:14 +0800</pubDate>
+      
+      <guid>http://minwang1.github.io/post/performance-analyze/</guid>
+      <description>perfetto 工具 （替代systrace）  加载：perfetto 会生成.perfetto-trace文件 加载.perfetto-trace文件需要使用网站 https://ui.perfetto.dev/#!/ 网站抓取：打开网站，选择record new trace选项，经行配置后可抓取，需要Android 10以上设备，并且厂商设备支持 adb抓取：用网站抓取的步骤，正确的选择设备版本，不同版本使用的命令不同，点击startRecording后会出现recording command。 将recordingcommand粘贴到shell中执行。 手机上抓取：手机进入开发者模式，找到系统跟踪选项，点击清除已保存跟踪路径，会弹出对话框显示文件生成保存路径。打开显示快捷设置图块。 然后可以再下拉菜单中开启、关闭抓取了。  分析 操作和分析和systrace类似
+ 查看掉帧进程 常看进程中线程阻塞/耗时情况 如果是阻塞，可继续分析是否被其他进程block 了解大概耗时代码位置，接着用CPU Profiler分析具体那些地方耗时过长  CPU Profiler AS 3.0之后版本支持，替代Android Monitor tools
+使用  点击 View &amp;gt; Tool Windows &amp;gt; Android Profiler（也可以点击底部工具栏中的Profiler）。 点击+号，添加目标进程，点击cpu选项，选择record java method，进行问题复现，点击stopRecording 对相关结果分析，可通过topdown等tab，快速定位  特殊场景
+启动性能分析  可通过adb shell am start -W pakageName/activityClassPath 命令，查看冷启动耗时 可以注意到AS CPU Profiler只能检测启动中的进程，这时候需要通过插桩方式，在设备中生成trace，再将tarce拉取到AS中分析  具体步骤为：
+ application 中 onCreate()方法加入 Debug.startMethodTracing(&amp;ldquo;sample-name&amp;rdquo;); 在启动绘制结束地方，activity中onWindownFocusChange()中可添加Debug.stopMethodTracing(); 复现问题后，系统将在getExternalFilesDir() 目录下生成 .</description>
+    </item>
+    
+  </channel>
+</rss>

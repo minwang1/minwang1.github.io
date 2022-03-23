@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Emoji二三事 | minwang1</title>
+<meta name="keywords" content="" />
+<meta name="description" content="Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：
+ emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。
+要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准
+1 Byte = 8 bite = 8b = 8位 = 8比特
+1 char = 2 Byte = 2B = 2字节 = 1字符
+   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式：">
+<meta name="author" content="">
+<link rel="canonical" href="http://minwang1.github.io/post/emoji/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://minwang1.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://minwang1.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://minwang1.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://minwang1.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="http://minwang1.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Emoji二三事" />
+<meta property="og:description" content="Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：
+ emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。
+要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准
+1 Byte = 8 bite = 8b = 8位 = 8比特
+1 char = 2 Byte = 2B = 2字节 = 1字符
+   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://minwang1.github.io/post/emoji/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-03-21T22:01:14&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-21T22:01:14&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Emoji二三事"/>
+<meta name="twitter:description" content="Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：
+ emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。
+要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准
+1 Byte = 8 bite = 8b = 8位 = 8比特
+1 char = 2 Byte = 2B = 2字节 = 1字符
+   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式："/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://minwang1.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Emoji二三事",
+      "item": "http://minwang1.github.io/post/emoji/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Emoji二三事",
+  "name": "Emoji二三事",
+  "description": "Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：\n emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。\n要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准\n1 Byte = 8 bite = 8b = 8位 = 8比特\n1 char = 2 Byte = 2B = 2字节 = 1字符\n   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式：",
+  "keywords": [
+    
+  ],
+  "articleBody": "Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：\n emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。\n要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准\n1 Byte = 8 bite = 8b = 8位 = 8比特\n1 char = 2 Byte = 2B = 2字节 = 1字符\n   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式：\n   平面 码位范围 实现     基本多语言平面 U+0000-U+FFFF 不需要转换，直接使用   辅助平面 U+10000-U+10FFFF 代理对显示，两个码元前一个称为 前导代理(lead surrogates) 范围为0xD800-0xDBFF，后一个称为 后尾代理(trail surrogates) 范围为0xDC00-0xDFFF      简而言之，Java 语言内部的字符信息是使用 UTF-16 编码。因为char 这个类型是 16-bit 的。它可以有65536种取值， 即65536个编号，每个编号可以代表1种字符。但是，Unicode 包含的字符已经远远超过65536个。那么编号大于65536的， 还要用 16-bit 编码，该怎么办？于是Unicode 标准制定组想出的办法就是，从这65536个编号里，拿出2048个， 规定它们是「Surrogates」，让它们两个为一组，来代表编号大于65536的那些字符。\nemoji无法显示问题 emoji最初由日本人发明，不同平台显示的图标并不统一，导致不同系统平台某些新定义的Unicode图标没有兼容，所以 ☐ 的形式显示。\nAndroid 这边给的方案是，jetpack中emoji库，EmojiCompat方式兼容,使用方式如下，\n https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat\n 国内不能通过在线下载的emoji的方式，只能通过预先打包，大小约7M。\nemoji文本省略问题 上文的背景介绍了，utf-8编码辅助平面会通过代理对显示的方式显示字符，所以会遇到emoji码值为于这个平面的情况例如\n🐠 的码值 \\uD83D\\uDC20\n由两个char组成，如果我们对文本进行裁切的时候，忽略了编码方式，仅裁切了码值中的一部分，就会导致获得的文本显示错误。\n正确的做法是，判断char是否是lead surrogates或者trail surrogates确定char数。\n U+D800 自定义emoji 使用微信/QQ聊天输入emoji时，如果选择自定义的表情进行复制，就会发现粘贴板中的内容是由 [ + 文字 + ] 组成的，其实也不神秘，自定义表情就是解析这段特殊 的字符串，映射到一个图标实现的，图标的加载可以用在textview中插入imageSpan或者是自定view实现image+text文本显示。\n具体例子可参考qmui中的EmojiconTextView和QMUIQQFaceView实现。\n",
+  "wordCount" : "128",
+  "inLanguage": "en",
+  "datePublished": "2022-03-21T22:01:14+08:00",
+  "dateModified": "2022-03-21T22:01:14+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://minwang1.github.io/post/emoji/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "minwang1",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://minwang1.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://minwang1.github.io/" accesskey="h" title="minwang1 (Alt + H)">minwang1</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://minwang1.github.io/post/" title="Blog">
+                    <span><i class='fa fa-heart'></i>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://minwang1.github.io/tags/" title="Tags">
+                    <span><i class='fa fa-road'></i>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Emoji二三事
+    </h1>
+    <div class="post-meta"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="emoji二三事">Emoji二三事<a hidden class="anchor" aria-hidden="true" href="#emoji二三事">#</a></h2>
+<p>进行文本处理时常常会遇到以下emoji相关的问题：</p>
+<ol>
+<li>emoji无法显示</li>
+<li>带emoji文本的省略(Elipze)问题</li>
+<li>自定义emoji</li>
+</ol>
+<p>以下逐个讨论。</p>
+<p>要弄清楚emoji问题，首先要了解emoji的组成
+目前字符编码标准</p>
+<p>1 Byte = 8 bite = 8b = 8位 = 8比特</p>
+<p>1 char = 2 Byte = 2B = 2字节 = 1字符</p>
+<table>
+<thead>
+<tr>
+<th>编码</th>
+<th>宽度</th>
+<th>范围</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.ASCII</td>
+<td>8 bit</td>
+<td>0~127</td>
+<td>定义字符少只能显示英文</td>
+</tr>
+<tr>
+<td>2.Unicode</td>
+<td>2 Byte</td>
+<td>0~2^16</td>
+<td>特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）</td>
+</tr>
+<tr>
+<td>3.Utf-8</td>
+<td>1 Byte</td>
+<td></td>
+<td>Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面</td>
+</tr>
+<tr>
+<td>3.Utf-16</td>
+<td>2 Byte</td>
+<td></td>
+<td>Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面</td>
+</tr>
+</tbody>
+</table>
+<p>UTF-16 编码实现方式：</p>
+<table>
+<thead>
+<tr>
+<th>平面</th>
+<th>码位范围</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本多语言平面</td>
+<td>U+0000-U+FFFF</td>
+<td>不需要转换，直接使用</td>
+</tr>
+<tr>
+<td>辅助平面</td>
+<td>U+10000-U+10FFFF</td>
+<td>代理对显示，两个码元前一个称为 前导代理(lead surrogates) 范围为0xD800-0xDBFF，后一个称为 后尾代理(trail surrogates) 范围为0xDC00-0xDFFF</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+</blockquote>
+<p>简而言之，Java 语言内部的字符信息是使用 UTF-16 编码。因为char 这个类型是 16-bit 的。它可以有65536种取值，
+即65536个编号，每个编号可以代表1种字符。但是，Unicode 包含的字符已经远远超过65536个。那么编号大于65536的，
+还要用 16-bit 编码，该怎么办？于是Unicode 标准制定组想出的办法就是，从这65536个编号里，拿出2048个，
+规定它们是「Surrogates」，让它们两个为一组，来代表编号大于65536的那些字符。</p>
+<h3 id="emoji无法显示问题">emoji无法显示问题<a hidden class="anchor" aria-hidden="true" href="#emoji无法显示问题">#</a></h3>
+<p>emoji最初由日本人发明，不同平台显示的图标并不统一，导致不同系统平台某些新定义的Unicode图标没有兼容，所以 ☐ 的形式显示。</p>
+<p>Android 这边给的方案是，jetpack中emoji库，EmojiCompat方式兼容,使用方式如下，</p>
+<blockquote>
+<p><a href="https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat">https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat</a></p>
+</blockquote>
+<p>国内不能通过在线下载的emoji的方式，只能通过预先打包，大小约7M。</p>
+<h3 id="emoji文本省略问题">emoji文本省略问题<a hidden class="anchor" aria-hidden="true" href="#emoji文本省略问题">#</a></h3>
+<p>上文的背景介绍了，utf-8编码辅助平面会通过代理对显示的方式显示字符，所以会遇到emoji码值为于这个平面的情况例如</p>
+<p>🐠 的码值 \uD83D\uDC20</p>
+<p>由两个char组成，如果我们对文本进行裁切的时候，忽略了编码方式，仅裁切了码值中的一部分，就会导致获得的文本显示错误。</p>
+<p>正确的做法是，判断char是否是lead surrogates或者trail surrogates确定char数。</p>
+<blockquote>
+<p>U+D800 &lt;= ch &lt;= U+DBFF //lead surrogates
+U+DC00 &lt;= ch &lt;= U+DFFF //trail surrogates</p>
+</blockquote>
+<h3 id="自定义emoji">自定义emoji<a hidden class="anchor" aria-hidden="true" href="#自定义emoji">#</a></h3>
+<p>使用微信/QQ聊天输入emoji时，如果选择自定义的表情进行复制，就会发现粘贴板中的内容是由 [ + 文字 + ] 组成的，其实也不神秘，自定义表情就是解析这段特殊
+的字符串，映射到一个图标实现的，图标的加载可以用在textview中插入imageSpan或者是自定view实现image+text文本显示。</p>
+<p>具体例子可参考qmui中的EmojiconTextView和QMUIQQFaceView实现。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="http://minwang1.github.io/">minwang1</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

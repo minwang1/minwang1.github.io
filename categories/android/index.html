@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head>
-	<meta name="generator" content="Hugo 0.95.0" /><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>minwang1</title>
-
+<title>Android | minwang1</title>
+<meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://minwang1.github.io/" />
+<link rel="canonical" href="http://minwang1.github.io/categories/android/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://minwang1.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://minwang1.github.io/favicon-16x16.png">
@@ -19,7 +18,7 @@
 <link rel="mask-icon" href="http://minwang1.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://minwang1.github.io/index.xml">
+<link rel="alternate" type="application/rss+xml" href="http://minwang1.github.io/categories/android/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,28 +55,15 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="minwang1" />
+</noscript><meta property="og:title" content="Android" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://minwang1.github.io/" />
+<meta property="og:url" content="http://minwang1.github.io/categories/android/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="minwang1"/>
+<meta name="twitter:title" content="Android"/>
 <meta name="twitter:description" content=""/>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "minwang1",
-  "url": "http://minwang1.github.io/",
-  "description": "",
-  "thumbnailUrl": "http://minwang1.github.io/favicon.ico",
-  "sameAs": [
-      
-  ]
-}
-</script>
 </head>
 
 <body class="list" id="top">
@@ -134,8 +120,11 @@
     </nav>
 </header>
 <main class="main"> 
+<header class="page-header">
+  <h1>Android</h1>
+</header>
 
-<article class="first-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>Android dark 模式原理
     </h2>
@@ -152,20 +141,7 @@ application attachBaseContext开始计算时间，activity onWindowFocusChanged�
   <a class="entry-link" aria-label="post link to Android dark 模式原理" href="http://minwang1.github.io/post/android-drak-theme/"></a>
 </article>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Android字体小结
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>字体小结： font family/typeface可以设置字体类别:  有衬：serif ：字符有装饰适合打印显示 无衬：sans-serif ：字符无饰适合显示屏显示 等宽：monospace：字符的宽度相等适合代码显示  fontStyle可设置字体粗细、倾斜    样式 字重     italic    light 300   Regular 400   medium 500   bold 700    android 默认fontFamily  英文字符 roboto 中文字符 思源雅黑  Android 英文默认使用roboto字体，robot字体不包含cjk（汉字）字符，如果显示汉字字符，会使用对应的思源雅黑字体。
-思源雅黑Android中没有medium样式，所以如果代码中仅仅设置了sans-serif-medium，英文字符能正常显示，中文字符不能正常显示需要通过指定fontweight:500替代显示</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to Android字体小结" href="http://minwang1.github.io/post/android-font/"></a>
-</article>
-
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>Android常用性能分析
     </h2>
@@ -181,86 +157,7 @@ application attachBaseContext开始计算时间，activity onWindowFocusChanged�
   <a class="entry-link" aria-label="post link to Android常用性能分析" href="http://minwang1.github.io/post/performance-analyze/"></a>
 </article>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Emoji二三事
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Emoji二三事 进行文本处理时常常会遇到以下emoji相关的问题：
- emoji无法显示 带emoji文本的省略(Elipze)问题 自定义emoji  以下逐个讨论。
-要弄清楚emoji问题，首先要了解emoji的组成 目前字符编码标准
-1 Byte = 8 bite = 8b = 8位 = 8比特
-1 char = 2 Byte = 2B = 2字节 = 1字符
-   编码 宽度 范围 特点     1.ASCII 8 bit 0~127 定义字符少只能显示英文   2.Unicode 2 Byte 0~2^16 特殊编码方式，Unicode的实现方式称为Unicode转换格式（Unicode Transformation Format，简称为UTF）   3.Utf-8 1 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面   3.Utf-16 2 Byte  Unicode 一种，分平面显示：兼容ascii平面，拉丁文平面，其他文本平面，辅助平面    UTF-16 编码实现方式：...</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to Emoji二三事" href="http://minwang1.github.io/post/emoji/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>EventBus原理
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>#EventBus
-优缺点 优点
-  跨组件事件通信功能
-  轻量，快速，代码优化
-  使用简单缺点
-  过于“低耦合”，造成代码几个混乱，难以测试和追踪。
-  无法进程IPC， 配置了Android:process的service无法使用eventBus通信。 ### 使用方法1. Define events:
-public static class MessageEvent { /* Additional fields if needed */ }    Prepare subscribers: Declare and annotate your subscribing method, optionally specify a thread mode:
-@Subscribe(threadMode = ThreadMode.MAIN) public void onMessageEvent(MessageEvent event) {/* Do something */}; Register and unregister your subscriber. For example on Android, activities and fragments should usually register according to their life cycle:...</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to EventBus原理" href="http://minwang1.github.io/post/eventbus/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>gitCheatSheet
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>git command cheat sheet  HEAD指向当前操作的地方 相对引用：~Num 是num笔提交的引用，^指向1比提交引用。^ == ~1 HEAD~1 指向HEAD之前一笔提交，HEAD~2指向HEAD之前2笔提交 HEAD^2 比较特殊，指向HEAD最近的父合并节点的第二个合并提交。 git describe &lt;ref&gt;  命令用来描述离你最近的锚点 (tag), 它输出的结果是这样的：&lt;tag&gt;_&lt;numCommits&gt;_g&lt;hash&gt;
- git tag &lt;tagName&gt; &lt;ref&gt;  在ref位置添加一个锚点
-  git rebase &lt;targetBranch&gt; 将当前分支合并到目标分支上，并且切换到合并后的分支上。
-  git rebase -i 交互式rebase，可以合并多比提交
-  git reset &lt;ref&gt; 本地仓库代码回退到&lt;ref&gt;指定的提交地方
-  git revert &lt;ref&gt; 删除到&lt;ref&gt;提交，会产生一个删除代码的提交
-  ==================远程操作=========================
-  &lt;remote&gt; 远程仓库名称，默认origin
-  git push &lt;remote&gt; &lt;place&gt;
-  git push origin master...</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to gitCheatSheet" href="http://minwang1.github.io/post/gitcheatsheet/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Java8流式编程
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>流式编程 背景 利用流，我们无需迭代集合中的元素，就可以提取和操作它们。这些管道通常被组合在一起，在流上形成一条操作管道
-java7 过渡到 java8，直接向接口添加新方法会破坏所有老的接口实现类。Java 8 采用的解决方案是：在接口中添加被 default（默认）修饰的方法。
-default Streamstream()https://github.com/LingCoder/OnJava8/blob/master/docs/book/14-Streams.md
-相关API 流的生成  Stream.of()/Colleaction.stream()/Colleaction.iterator()创建流 Random 子方法生成随机流 BaseStream 相关子类方法生成流 正则表达式匹配后结果生成流  中间操作 流中获取对象，将对象作为一个流从后端输出。
- peek()允许你无修改地查看流中的元素。 示例peek(e -&gt; System.out.println(“Filtered value: &#34; &#43; e))* sorted() 元素排序。示例sorted(Comparator.reverseOrder())* distinct() 移除重复元素，类似Set的功能。示例list.stream().distinct(); filter(Predicate) 根据Predicate给的函数条件过滤元素。 示例filter(e -&gt; e &gt; 2);  应用到元素
-  map(Function) 将函数操作应用在输入流元素中，将返回元素集合传递到输出流中，可改变返回元素的类型。 示例map(e -&gt; e &#43; 2);
-  mapToInt(ToIntFunction)：操作同上，但结果是 IntStream。
-  mapToLong(ToLongFunction)：操作同上，但结果是 LongStream。
-  mapToDouble(ToDoubleFunction)：操作同上，但结果是 DoubleStream。
-  flatMap(Function) Function功能是产生一个流,flatMap用于组合返回的流，扁平化为元素。 例子Stream....</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to Java8流式编程" href="http://minwang1.github.io/post/streaming-programming/"></a>
-</article>
-
-<article class="post-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2>LifeCycle原理
     </h2>
@@ -274,18 +171,6 @@ lifeCycle中有如下状态图，以将状态看作图中的节点，将事件�
   </section>
   <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
   <a class="entry-link" aria-label="post link to LifeCycle原理" href="http://minwang1.github.io/post/about-lifecycle/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>设计模式-动态代理
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>使用代码 范例 public class ProxyTest {   @Test  public void startTest() {  //创建被代理对象， 实现了sayHello接口  Hello toBeProxy = () -&gt; System.out.println(&#34;say hello&#34;);   //创建handler对象  //创建代理对象  Hello hello = (Hello) Proxy.newProxyInstance(Hello.class.getClassLoader(), new Class[]{ Hello.class}, new HelloHandler(toBeProxy));   //执行代理对象的sayHello方法  hello.sayHello();  }   interface Hello {  void sayHello();  }   public class HelloHandler implements InvocationHandler {   private Object target;   public HelloHandler(Object target) {  this....</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-03-21 22:01:14 +0800 CST'>March 21, 2022</span></footer>
-  <a class="entry-link" aria-label="post link to 设计模式-动态代理" href="http://minwang1.github.io/post/dynamic-proxy/"></a>
 </article>
     </main>
     

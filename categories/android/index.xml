@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Android on minwang1</title>
+    <link>http://minwang1.github.io/categories/android/</link>
+    <description>Recent content in Android on minwang1</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 21 Mar 2022 22:01:14 +0800</lastBuildDate><atom:link href="http://minwang1.github.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android dark 模式原理</title>
+      <link>http://minwang1.github.io/post/android-drak-theme/</link>
+      <pubDate>Mon, 21 Mar 2022 22:01:14 +0800</pubDate>
+      
+      <guid>http://minwang1.github.io/post/android-drak-theme/</guid>
+      <description>Android dark 模式原理  sRgb to lab revert l lab to sRGB  float invertedL = std::min(110 - lab.L, 100.0f);
+if (invertedL &amp;lt; lab.L) {// 反转后的明度低于原明度，则使用反转后的明度lab.L = invertedL;// 使用 rgb 格式返回return LabToSRGB(lab, SkColorGetA(color));} else {// 直接返回原颜色return color;} 其他应用启动本应用ActivityStack如何处理 例如当前启动配置为A，当前栈情况 A-B，应用home进入后台，通过负一屏启动应用A。 如果不做任何处理，启动后栈情况：A-B-A。而预期栈情况仍热为A-B，即用户上一次操作状况。
+解决方法： 通过splashActivity做中转。 1.创建一个空的SplashActivity，theme为透明，配置为启动activity。 2.在splashActivity中做转发处理，如果当前activity栈中有其他activity，则退出splashActivity，top activity会resume，如果没有其他activity，则启动 mainactivity。
+统计启动时间 adb shell am start -S -R 10 -W com.example.app/.MainActivity
+-S表示每次启动前先强行停止 -R表示重复测试次数。
+application attachBaseContext开始计算时间，activity onWindowFocusChanged大致为用户可见，可计算启动结束时间。</description>
+    </item>
+    
+    <item>
+      <title>Android常用性能分析</title>
+      <link>http://minwang1.github.io/post/performance-analyze/</link>
+      <pubDate>Mon, 21 Mar 2022 22:01:14 +0800</pubDate>
+      
+      <guid>http://minwang1.github.io/post/performance-analyze/</guid>
+      <description>perfetto 工具 （替代systrace）  加载：perfetto 会生成.perfetto-trace文件 加载.perfetto-trace文件需要使用网站 https://ui.perfetto.dev/#!/ 网站抓取：打开网站，选择record new trace选项，经行配置后可抓取，需要Android 10以上设备，并且厂商设备支持 adb抓取：用网站抓取的步骤，正确的选择设备版本，不同版本使用的命令不同，点击startRecording后会出现recording command。 将recordingcommand粘贴到shell中执行。 手机上抓取：手机进入开发者模式，找到系统跟踪选项，点击清除已保存跟踪路径，会弹出对话框显示文件生成保存路径。打开显示快捷设置图块。 然后可以再下拉菜单中开启、关闭抓取了。  分析 操作和分析和systrace类似
+ 查看掉帧进程 常看进程中线程阻塞/耗时情况 如果是阻塞，可继续分析是否被其他进程block 了解大概耗时代码位置，接着用CPU Profiler分析具体那些地方耗时过长  CPU Profiler AS 3.0之后版本支持，替代Android Monitor tools
+使用  点击 View &amp;gt; Tool Windows &amp;gt; Android Profiler（也可以点击底部工具栏中的Profiler）。 点击+号，添加目标进程，点击cpu选项，选择record java method，进行问题复现，点击stopRecording 对相关结果分析，可通过topdown等tab，快速定位  特殊场景
+启动性能分析  可通过adb shell am start -W pakageName/activityClassPath 命令，查看冷启动耗时 可以注意到AS CPU Profiler只能检测启动中的进程，这时候需要通过插桩方式，在设备中生成trace，再将tarce拉取到AS中分析  具体步骤为：
+ application 中 onCreate()方法加入 Debug.startMethodTracing(&amp;ldquo;sample-name&amp;rdquo;); 在启动绘制结束地方，activity中onWindownFocusChange()中可添加Debug.stopMethodTracing(); 复现问题后，系统将在getExternalFilesDir() 目录下生成 .</description>
+    </item>
+    
+    <item>
+      <title>LifeCycle原理</title>
+      <link>http://minwang1.github.io/post/about-lifecycle/</link>
+      <pubDate>Mon, 21 Mar 2022 22:01:14 +0800</pubDate>
+      
+      <guid>http://minwang1.github.io/post/about-lifecycle/</guid>
+      <description>1.what lifeCycle use for ? Lifecycles是一个持有组件生命周期状态（Activity、Fragment）信息的类，用来解决生命周期管理问题的组件。 通过监听生命周期的方式(Handling Lifecycles with Lifecycle-Aware Components)，并允许其他对象观察此状态。
+在Android框架中生命周期是由系统管理的，应用必须要遵循，否则可能会导致内存泄漏等严重问题。 此外，无法保证组件会在 Activity 或 Fragment 停止之前启动。在我们需要执行长时间运行的操作（如 onStart() 中的某种配置检查）时尤其如此。这可能会导致出现一种竞争条件，在这种条件下，onStop() 方法会在 onStart() 之前结束， 这使得组件留存的时间比所需的时间要长。
+所以需要Lifecycle这个组件来帮助我们管理生命周期。 Lifecycle 是一个类，用于存储有关组件（如 Activity 或 Fragment）的生命周期状态的信息，并允许其他对象观察此状态。
+lifeCycle中有如下状态图，以将状态看作图中的节点，将事件看作这些节点之间的边。
+2.LifeCycle 组件的使用方法  如何让一个对象有activity生命周期？   实现LifecycleOwner接口，表示类有生命周期。 注册LifecycleObserver到LifecycleOwner中。   class MyActivity extends AppCompatActivity {  private MyLocationListener myLocationListener;   public void onCreate(...) {  myLocationListener = new MyLocationListener(this, getLifecycle(), location -&amp;gt; {  // update UI  });  Util.</description>
+    </item>
+    
+  </channel>
+</rss>
