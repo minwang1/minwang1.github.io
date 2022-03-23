@@ -133,5 +133,6 @@ lifeCycle中有如下状态图，以将状态看作图中的节点，将事件�
       <description>使用代码 范例 public class ProxyTest {   @Test  public void startTest() {  //创建被代理对象， 实现了sayHello接口  Hello toBeProxy = () -&amp;gt; System.out.println(&amp;#34;say hello&amp;#34;);   //创建handler对象  //创建代理对象  Hello hello = (Hello) Proxy.newProxyInstance(Hello.class.getClassLoader(), new Class[]{ Hello.class}, new HelloHandler(toBeProxy));   //执行代理对象的sayHello方法  hello.sayHello();  }   interface Hello {  void sayHello();  }   public class HelloHandler implements InvocationHandler {   private Object target;   public HelloHandler(Object target) {  this.</description>
     </item>
     
+    
   </channel>
 </rss>
